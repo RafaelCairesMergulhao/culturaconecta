@@ -1,0 +1,206 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --color-ink: var(--bg);
+  --color-card: var(--bg2);
+  --color-line: var(--line);
+  --color-paper: var(--paper);
+  --color-muted: var(--muted);
+  --color-rosa: var(--accent);
+  --color-azul: var(--accent2);
+}
+
+:root {
+  --accent: #ec2f77;
+  --accent2: #2f6fed;
+  --app-bg-image: none;
+  --app-bg-dim: 60%;
+  --app-bg-blur: 0px;
+}
+
+:root,
+[data-theme="dark"] {
+  --bg: #060d1f;
+  --bg2: #0f1d3a;
+  --line: #22365c;
+  --paper: #f4f7fb;
+  --muted: #93a6c9;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: #f2f5fb;
+  --bg2: #ffffff;
+  --line: #d3dcec;
+  --paper: #0e1a33;
+  --muted: #56688c;
+  color-scheme: light;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--paper);
+    font-family: var(--font-sans);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  input[type="range"],
+  input[type="checkbox"] {
+    accent-color: var(--accent);
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+}
+
+.app-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.app-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--app-bg-blur) * -2);
+  background-image: var(--app-bg-image);
+  background-size: cover;
+  background-position: center;
+  filter: blur(var(--app-bg-blur));
+}
+
+.app-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--bg) var(--app-bg-dim), transparent);
+}
+
+html:not([data-has-bg="1"]) .app-backdrop::before {
+  inset: 0;
+  filter: none;
+  background:
+    radial-gradient(55rem 38rem at 8% -12%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 70%),
+    radial-gradient(48rem 36rem at 105% 8%, color-mix(in srgb, var(--accent2) 18%, transparent), transparent 70%),
+    radial-gradient(40rem 30rem at 50% 115%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%);
+}
+
+html:not([data-has-bg="1"]) .app-backdrop::after {
+  background: none;
+}
+
+html[data-glass="1"] .bg-card {
+  background-color: color-mix(in srgb, var(--bg2) 70%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes cc-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translate3d(0, -22px, 0) rotate(calc(var(--r, 0deg) + 14deg));
+  }
+}
+
+@keyframes cc-burst {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+    opacity: 0.95;
+  }
+  60% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.6) rotate(40deg);
+    opacity: 0;
+  }
+}
+
+@keyframes cc-pop {
+  from {
+    transform: translateY(8px) scale(0.98);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes cc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cc-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+.cc-pop {
+  animation: cc-pop 0.28s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

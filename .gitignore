@@ -1,0 +1,6 @@
+node_modules
+.next
+.env.local
+data/network.json
+data/network.json.tmp
+data/uploads
